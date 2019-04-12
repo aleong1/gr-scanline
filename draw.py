@@ -26,25 +26,27 @@ def scanline_convert(polygons, i, screen, zbuffer ):
         #finding x0
         x0 += (top[0] - bot[0])/(top[1] - bot[1])
         if yVal == mid[1]:
-            if (top[1] - mid[1]) == 0.0:
+            if top[1] == mid[1]:
                 x1 += 0.0
             else:
                 x1 += (top[0] - mid[0])/(top[1] - mid[1])
         else:
-            if (mid[1] - bot[1]) == 0.0:
+            if mid[1] == bot[1]:
                 x1 += 0.0
             else:
                 x1 += (mid[0] - bot[0])/(mid[1] - bot[1])
 
         #calc z
         
-
+        
+        
+        #colors?
         r += 10
         g += 30
         b += 10
         color = [r%255, g % 255, b%255]
 
-        draw_line(x0, yVal, z0, x1, yVal, z1, screen, zbuffer, color)
+        draw_line(int(x0), int(yVal), int(z0), int(x1), int(yVal), int(z1), screen, zbuffer, color)
 
 
 def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
