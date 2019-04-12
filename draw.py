@@ -35,6 +35,10 @@ def scanline_convert(polygons, i, screen, zbuffer ):
                 x1 += 0.0
             else:
                 x1 += (mid[0] - bot[0])/(mid[1] - bot[1])
+
+        #calc z
+        
+
         r += 10
         g += 30
         b += 10
@@ -299,13 +303,17 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
     if x0 > x1:
         xt = x0
         yt = y0
+        zt = z0
         x0 = x1
         y0 = y1
+        z0 = z1
         x1 = xt
         y1 = yt
+        z1 = zt
 
     x = x0
     y = y0
+    z = z0
     A = 2 * (y1 - y0)
     B = -2 * (x1 - x0)
     wide = False
