@@ -3,7 +3,45 @@ from matrix import *
 from gmath import *
 
 def scanline_convert(polygons, i, screen, zbuffer ):
-    pass
+    y0 = polygons[i]
+    y1 = polygons[i+1]
+    y2 = polygons[i+2]
+
+    yList = [y0, y1, y2]
+
+    def compY(val):
+        return val[1]
+    yList.sort(key = compY)
+
+    bot = yList[0]
+    top = yList[2]
+    mid = yList[1]
+
+    x0 = float(0)
+    x1 = float(0)
+    r = 100
+    g = 200
+    b = 50
+    for yVal in range(bot[1], top[1], 1):
+        #finding x0
+        x0 += (top[0] - bot[0])/(top[1] - bot[1])
+        if yVal == mid[1]:
+            if (top[1] - mid[1]) == 0.0:
+                x1 += 0.0
+            else:
+                x1 += (top[0] - mid[0])/(top[1] - mid[1])
+        else:
+            if (mid[1] - bot[1]) == 0.0:
+                x1 += 0.0
+            else:
+                x1 += (mid[0] - bot[0])/(mid[1] - bot[1])
+        r += 10
+        g += 30
+        b += 10
+        color = [r%255, g % 255, b%255]
+
+        draw_line(x0, yVal, z0, x1, yVal, z1, screen, zbuffer, color)
+
 
 def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
     add_point(polygons, x0, y0, z0)
@@ -12,7 +50,7 @@ def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
 
 def draw_polygons( polygons, screen, zbuffer, color ):
     if len(polygons) < 2:
-        print 'Need at least 3 points to draw'
+        print ('Need at least 3 points to draw')
         return
 
     point = 0
@@ -42,7 +80,10 @@ def draw_polygons( polygons, screen, zbuffer, color ):
                        int(polygons[point+2][1]),
                        polygons[point+2][2],
                        screen, zbuffer, color)
+
+        scanline_convert(polygons, point, screen, zbuffer)
         point+= 3
+
 
 
 def add_box( polygons, x, y, z, width, height, depth ):
@@ -229,7 +270,7 @@ def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
 
 def draw_lines( matrix, screen, zbuffer, color ):
     if len(matrix) < 2:
-        print 'Need at least 2 points to draw'
+        print ('Need at least 2 points to draw')
         return
 
     point = 0
